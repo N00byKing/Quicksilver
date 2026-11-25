@@ -43,6 +43,7 @@ void mpiIsend          ( void *buf, int count, MPI_Datatype datatype, int dest, 
 void mpiSend           ( void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm);
 void mpiType_contiguous( int count, MPI_Datatype old_type, MPI_Datatype *newtype );
 void mpiType_commit    ( MPI_Datatype *datatype ) ;
+void mpiType_free      ( MPI_Datatype *datatype ) ;
 void mpiAllreduce      ( void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op operation, MPI_Comm comm );
 void mpiIAllreduce     ( void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op operation, MPI_Comm comm, MPI_Request *request);
 void mpiScan           ( void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op operation, MPI_Comm comm );
@@ -97,6 +98,7 @@ inline void mpiWaitall        ( int count, MPI_Request *array_of_requests, MPI_S
 inline void mpiBarrier        ( MPI_Comm comm ) { return; }
 inline void mpiType_commit    ( MPI_Datatype *datatype ) { return; }
 inline void mpiType_contiguous(int count, MPI_Datatype old_type, MPI_Datatype *newtype) { return; }
+inline void mpiType_free      ( MPI_Datatype *datatype ) { return; }
 inline void mpiComm_rank      ( MPI_Comm comm, int *rank ) { *rank = 0; }
 inline void mpiComm_size      ( MPI_Comm comm, int *size ) { *size = 1; }
 inline void mpiGet_version    ( int *version, int *subversion ) { *version = 3; *subversion = 0; }

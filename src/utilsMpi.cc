@@ -73,6 +73,8 @@ void mpiType_commit(MPI_Datatype *datatype )
    { qs_assert(MPI_Type_commit( datatype ) == MPI_SUCCESS); }
 void mpiType_contiguous(int count, MPI_Datatype old_type, MPI_Datatype *newtype)
    { qs_assert(MPI_Type_contiguous(count, old_type, newtype) == MPI_SUCCESS); }
+void mpiType_free(MPI_Datatype *datatype )
+   { qs_assert(MPI_Type_free( datatype ) == MPI_SUCCESS); }
 void mpiWaitall( int count, MPI_Request *array_of_requests, MPI_Status *array_of_statuses )
    { qs_assert(MPI_Waitall(count, array_of_requests, array_of_statuses) == MPI_SUCCESS); }
 void mpiAllreduce ( void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op operation, MPI_Comm comm )

@@ -9,8 +9,6 @@ using std::vector;
 
 namespace
 {
-   MPI_Datatype cellInfoMpiType();
-   MPI_Datatype facetPairMpiType();
    bool compareDomainGid2(const FacetPair& a, const FacetPair& b);
 }
 
@@ -20,6 +18,17 @@ MpiCommObject::MpiCommObject(const MPI_Comm& comm, const DecompositionObject& dd
 :_comm(comm),
  _ddc(ddc)
 {
+   mpiType_contiguous(4, MPI_INT, &_cellInfoType);
+   mpiType_commit(&_cellInfoType);
+
+   mpiType_contiguous(8, MPI_INT, &_facetPairType);
+   mpiType_commit(&_facetPairType);
+}
+
+MpiCommObject::~MpiCommObject()
+{
+   mpiType_free(&_cellInfoType);
+   mpiType_free(&_facetPairType);
 }
 
 void MpiCommObject::exchange(MeshPartition::MapType& cellInfoMap,
@@ -49,7 +58,7 @@ void MpiCommObject::exchange(MeshPartition::MapType& cellInfoMap,
    CellInfo *recvBuf = new CellInfo[nItemsToRecv];
    MPI_Request *request = new MPI_Request[nRequest];
 
-   MPI_Datatype datatype = cellInfoMpiType();
+   MPI_Datatype datatype = _cellInfoType;
 
    // post recvs
    {
@@ -111,7 +120,7 @@ void MpiCommObject::exchange(vector<FacetPair> sendBuf,
    int nRecv = nSend;
    int nRequest = nSend + nRecv;
    MPI_Request *request = new MPI_Request[nRequest];
-   MPI_Datatype datatype = facetPairMpiType();
+   MPI_Datatype datatype = _facetPairType;
    MC_Location dummy(-1, -1, -1);
    recvBuf.resize(sendBuf.size());
    const int xTag = 14;
@@ -143,38 +152,6 @@ void MpiCommObject::exchange(vector<FacetPair> sendBuf,
 
 
 
-
-namespace
-{
-   MPI_Datatype cellInfoMpiType()
-   {
-      static MPI_Datatype datatype;
-      static bool inititalized = false;
-      if (! inititalized )
-      {
-         mpiType_contiguous(4, MPI_INT, &datatype);
-         mpiType_commit(&datatype);
-         inititalized = true;
-      }
-      return datatype;
-   }
-}
-
-namespace
-{
-   MPI_Datatype facetPairMpiType()
-   {
-      static MPI_Datatype datatype;
-      static bool inititalized = false;
-      if (! inititalized )
-      {
-         mpiType_contiguous(8, MPI_INT, &datatype);
-         mpiType_commit(&datatype);
-         inititalized = true;
-      }
-      return datatype;
-   }
-}
 
 namespace
 {

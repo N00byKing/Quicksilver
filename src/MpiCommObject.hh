@@ -15,6 +15,7 @@ class MpiCommObject : public CommObject
 {
  public:
    MpiCommObject(const MPI_Comm& comm, const DecompositionObject& ddc);
+   ~MpiCommObject();
 
    void exchange(MeshPartition::MapType& cellInfo,
                  const std::vector<int>& nbrDomain,
@@ -26,6 +27,8 @@ class MpiCommObject : public CommObject
  private:
    MPI_Comm _comm;
    DecompositionObject _ddc;
+   MPI_Datatype _cellInfoType;
+   MPI_Datatype _facetPairType;
 };
 
 #endif
