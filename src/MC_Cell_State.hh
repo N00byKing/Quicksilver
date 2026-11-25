@@ -2,9 +2,9 @@
 #define MC_CELL_STATE_INCLUDE
 
 #include <cstdio>
+#include <cstdint>
 #include "QS_Vector.hh"
 #include "macros.hh"
-
 
 // this stores all the material information on a cell
 class MC_Cell_State

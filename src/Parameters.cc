@@ -27,6 +27,7 @@
 #include "qs_assert.hh"
 #include <utility>
 #include <fstream>
+#include <cstdint>
 
 #include "cmdLineParser.hh"
 #include "parseUtils.hh"
